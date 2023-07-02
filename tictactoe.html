@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background: linear-gradient(to right, red, blue);
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none;
+    }
+    h1{
+      text-align: center;
+      font-family: cursive;
+    }
+    table {
+      border: 1px solid black;
+      border-collapse: collapse;
+      background-color: yellow;
+      background: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(6.9px);
+      -webkit-backdrop-filter: blur(6.9px);
+    }
+    td {
+      width: 100px;
+      height: 100px;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 48px;
+      border: 1px solid black;
+      cursor: pointer;
+    }
+	  a{
+		  color: white;
+	  }
+    td:hover {
+      background-color: rgb(148, 148, 148);
+    }
+    button{
+      color: white;
+      background-color: blue;
+      border-radius: 6px;
+      width: 30%;
+      font-weight: bold;
+		  cursor: pointer;
+    }
+    p{
+      font-weight: bold;
+      position: absolute;
+      bottom: 10px; 
+      right: 4px;
+    }
+  </style>
+  <title>Ariyo's tic-tac-toe</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+    <h1>Multiplayer Tic Tac Toe</h1>
+  <center>
+  <table id="board">
+    <tr>
+      <td class="cell"></td>
+      <td class="cell"></td>
+      <td class="cell"></td>
+    </tr>
+    <tr>
+      <td class="cell"></td>
+      <td class="cell"></td>
+      <td class="cell"></td>
+    </tr>
+    <tr>
+      <td class="cell"></td>
+      <td class="cell"></td>
+      <td class="cell"></td>
+    </tr>
+  </table>
+  </center>
+  <br><br>
+  <center><button onclick="restart()">Restart</button></center>
+  <p>Created by <a href="https://ariyoaresa.github.io/my-website" target="blank">Ariyo</a></p>
+  <script>
+    const board = [
+	[0, 0, 0],
+	[0, 0, 0],
+	[0, 0, 0]
+	];
+
+const symbols = ['', 'X', 'O'];
+let currentPlayer = 1;
+
+const boardElement = document.getElementById('board');
+
+function render() {
+  board.forEach((row, rowIndex) => {
+    row.forEach((cell, cellIndex) => {
+      boardElement.rows[rowIndex].cells[cellIndex].innerText = symbols[cell];
+    });
+  });
+}
+
+function checkWin() {
+  // check rows
+  for (let i = 0; i < 3; i++) {
+    if (board[i][0] === board[i][1] && board[i][1] === board[i][2] && board[i][0] !== 0) {
+      return true;
+    }
+  }
+
+  // check columns
+  for (let i = 0; i < 3; i++) {
+    if (board[0][i] === board[1][i] && board[1][i] === board[2][i] && board[0][i] !== 0) {
+      return true;
+    }
+  }
+
+  // check diagonals
+  if (board[0][0] === board[1][1] && board[1][1] === board[2][2] && board[0][0] !== 0) {
+    return true;
+  }
+  if (board[0][2] === board[1][1] && board[1][1] === board[2][0] && board[0][2] !== 0) {
+    return true;
+  }
+
+  return false;
+}
+
+function checkDraw() {
+  return board.every(row => row.every(cell => cell !== 0));
+}
+
+function handleCellClick(rowIndex, cellIndex) {
+  if (board[rowIndex][cellIndex] !== 0) {
+    return;
+  }
+
+  board[rowIndex][cellIndex] = currentPlayer;
+  render();
+
+  if (checkWin()) {
+    alert(`Player ${currentPlayer} wins!`);
+  } else if (checkDraw()) {
+    alert('Draw!');
+  } else {
+    currentPlayer = currentPlayer === 1 ? 2 : 1;
+  }
+}
+
+boardElement.addEventListener('click', event => {
+  const cell = event.target;
+  const rowIndex = cell.parentNode.rowIndex;
+  const cellIndex = cell.cellIndex;
+    handleCellClick(rowIndex, cellIndex);
+})
+
+render();
+
+function restart() {
+  window.location.reload()
+}
+  </script>
+</body>
+</html>
