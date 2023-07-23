@@ -159,8 +159,19 @@ boardElement.addEventListener('click', event => {
 render();
 
 function restart() {
-  window.location.reload()
-}
+      // Clear the board array
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          board[i][j] = 0;
+        }
+      }
+
+      // Reset current player to player 1
+      currentPlayer = 1;
+
+      // Clear the messages on the board
+      render();
+    }
   </script>
 </body>
 </html>
